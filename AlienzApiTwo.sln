@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlienzApi", "AlienzApi\AlienzApi.csproj", "{3B801604-C838-4B74-ABC6-1C607CEB739E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlienzApi.Tests", "AlienzApi.Tests\AlienzApi.Tests.csproj", "{A024468E-2746-4951-BF84-445762661DBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B801604-C838-4B74-ABC6-1C607CEB739E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B801604-C838-4B74-ABC6-1C607CEB739E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B801604-C838-4B74-ABC6-1C607CEB739E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B801604-C838-4B74-ABC6-1C607CEB739E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A024468E-2746-4951-BF84-445762661DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A024468E-2746-4951-BF84-445762661DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A024468E-2746-4951-BF84-445762661DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A024468E-2746-4951-BF84-445762661DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
