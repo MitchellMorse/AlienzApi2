@@ -1,0 +1,108 @@
+using AlienzApi.Models.ExampleModels;
+using AlienzApi.Models.GameModels;
+
+namespace AlienzApi.Migrations
+{
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<AlienzApi.Models.AlienzApiContext>
+    {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = false;
+        }
+
+        protected override void Seed(AlienzApi.Models.AlienzApiContext context)
+        {
+            context.Levels.AddOrUpdate(x => x.Id,
+                new Level()
+                {
+                    Id = 1,
+                    SequenceInWorld = 1,
+                    World = 1,
+                    StartingFuel = 100,
+                    StartingTime = 2000,
+                    Tier1Reward = 1,
+                    Tier2Reward = 1,
+                    Tier3Reward = 1,
+                    Tier2Score = 200,
+                    Tier3Score = 300
+                },
+                new Level()
+                {
+                    Id = 2,
+                    SequenceInWorld = 2,
+                    World = 1,
+                    StartingFuel = 200,
+                    StartingTime = 2000,
+                    Tier1Reward = 1,
+                    Tier2Reward = 1,
+                    Tier3Reward = 1,
+                    Tier2Score = 200,
+                    Tier3Score = 300
+                },
+                new Level()
+                {
+                    Id = 3,
+                    SequenceInWorld = 3,
+                    World = 1,
+                    StartingFuel = 100,
+                    StartingTime = 2000,
+                    Tier1Reward = 1,
+                    Tier2Reward = 1,
+                    Tier3Reward = 1,
+                    Tier2Score = 200,
+                    Tier3Score = 300
+                }
+                );
+
+            //context.Authors.AddOrUpdate(x => x.Id,
+            //    new Author() { Id = 1, Name = "Jane Austen" },
+            //    new Author() { Id = 2, Name = "Charles Dickens" },
+            //    new Author() { Id = 3, Name = "Miguel de Cervantes" }
+            //);
+
+            //context.Books.AddOrUpdate(x => x.Id,
+            //    new Book()
+            //    {
+            //        Id = 1,
+            //        Title = "Pride and Prejudice",
+            //        Year = 1813,
+            //        AuthorId = 1,
+            //        Price = 9.99M,
+            //        Genre = "Comedy of manners"
+            //    },
+            //    new Book()
+            //    {
+            //        Id = 2,
+            //        Title = "Northanger Abbey",
+            //        Year = 1817,
+            //        AuthorId = 1,
+            //        Price = 12.95M,
+            //        Genre = "Gothic parody"
+            //    },
+            //    new Book()
+            //    {
+            //        Id = 3,
+            //        Title = "David Copperfield",
+            //        Year = 1850,
+            //        AuthorId = 2,
+            //        Price = 15,
+            //        Genre = "Bildungsroman"
+            //    },
+            //    new Book()
+            //    {
+            //        Id = 4,
+            //        Title = "Don Quixote",
+            //        Year = 1617,
+            //        AuthorId = 3,
+            //        Price = 8.95M,
+            //        Genre = "Picaresque"
+            //    }
+            //);
+        }
+    }
+}
