@@ -8,8 +8,10 @@ namespace AlienzApi.Models.Interfaces
     public interface IAlienzApiContext : IDisposable
     {
         DbSet<Level> Levels { get; }
+        DbSet<Player> Players { get; }
+        DbSet<LevelAttempt> LevelAttempts { get; }
         int SaveChanges();
         Task<int> SaveChangesAsync();
-        void MarkAsModified(Level level);
+        void MarkAsModified<t>(t item) where t : class;
     }
 }

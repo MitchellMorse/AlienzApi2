@@ -1,4 +1,3 @@
-using AlienzApi.Models.ExampleModels;
 using AlienzApi.Models.GameModels;
 
 namespace AlienzApi.Migrations
@@ -12,7 +11,7 @@ namespace AlienzApi.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(AlienzApi.Models.AlienzApiContext context)
@@ -25,12 +24,8 @@ namespace AlienzApi.Migrations
                     World = 1,
                     StartingFuel = 100,
                     StartingTime = 2000,
-                    Tier1Reward = 1,
-                    Tier2Reward = 1,
-                    Tier3Reward = 1,
-                    Tier2Score = 200,
-                    Tier3Score = 300,
-                    Active = true
+                    Active = true,
+                    IsBlockingLevel = false
                 },
                 new Level()
                 {
@@ -39,12 +34,8 @@ namespace AlienzApi.Migrations
                     World = 1,
                     StartingFuel = 200,
                     StartingTime = 2000,
-                    Tier1Reward = 1,
-                    Tier2Reward = 1,
-                    Tier3Reward = 1,
-                    Tier2Score = 200,
-                    Tier3Score = 300,
-                    Active = true
+                    Active = true,
+                    IsBlockingLevel = false
                 },
                 new Level()
                 {
@@ -53,12 +44,18 @@ namespace AlienzApi.Migrations
                     World = 1,
                     StartingFuel = 100,
                     StartingTime = 2000,
-                    Tier1Reward = 1,
-                    Tier2Reward = 1,
-                    Tier3Reward = 1,
-                    Tier2Score = 200,
-                    Tier3Score = 300,
-                    Active = true
+                    Active = true,
+                    IsBlockingLevel = false
+                },
+                new Level()
+                {
+                    Id = 4,
+                    SequenceInWorld = 4,
+                    World = 1,
+                    StartingFuel = 100,
+                    StartingTime = 2000,
+                    Active = true,
+                    IsBlockingLevel = true
                 }
                 );
 
@@ -250,15 +247,6 @@ namespace AlienzApi.Migrations
                 }
                 );
 
-            context.BlockWalls.AddOrUpdate(
-                new BlockWall()
-                {
-                    Id = 1,
-                    World = 1,
-                    Sequence = 4
-                }
-                );
-
             context.Powerups.AddOrUpdate(
                 new Powerup()
                 {
@@ -281,7 +269,7 @@ namespace AlienzApi.Migrations
                     Quantity = 1,
                     EnergyCost = 5,
                     Active = true,
-                    BlockWallId = 1
+                    LevelId = 4
                 },
                 new EnergyPurchaseableItem()
                 {
@@ -291,7 +279,7 @@ namespace AlienzApi.Migrations
                     Quantity = 3,
                     EnergyCost = 10,
                     Active = true,
-                    BlockWallId = null
+                    LevelId = null
                 },
                 new EnergyPurchaseableItem()
                 {
@@ -301,7 +289,7 @@ namespace AlienzApi.Migrations
                     Quantity = 3,
                     EnergyCost = 10,
                     Active = true,
-                    BlockWallId = null
+                    LevelId = null
                 },
                 new EnergyPurchaseableItem()
                 {
@@ -311,7 +299,7 @@ namespace AlienzApi.Migrations
                     Quantity = 6,
                     EnergyCost = 18,
                     Active = true,
-                    BlockWallId = null
+                    LevelId = null
                 },
                 new EnergyPurchaseableItem()
                 {
@@ -321,7 +309,27 @@ namespace AlienzApi.Migrations
                     Quantity = 6,
                     EnergyCost = 18,
                     Active = true,
-                    BlockWallId = null
+                    LevelId = null
+                },
+                new EnergyPurchaseableItem()
+                {
+                    Id = 6,
+                    Name = "Refuel",
+                    PowerupId = null,
+                    Quantity = 1,
+                    EnergyCost = 5,
+                    Active = true,
+                    LevelId = null
+                },
+                new EnergyPurchaseableItem()
+                {
+                    Id = 7,
+                    Name = "ExtraLife",
+                    PowerupId = null,
+                    Quantity = 1,
+                    EnergyCost = 5,
+                    Active = true,
+                    LevelId = null
                 }
                 );
         }

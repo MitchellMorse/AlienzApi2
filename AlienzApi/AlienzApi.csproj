@@ -233,34 +233,21 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Business\LevelProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
+    <Compile Include="Controllers\EnergyPackagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LevelsController.cs" />
+    <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606282345140_Initial.cs" />
-    <Compile Include="Migrations\201606282345140_Initial.Designer.cs">
-      <DependentUpon>201606282345140_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606290031181_Initial1.cs" />
-    <Compile Include="Migrations\201606290031181_Initial1.Designer.cs">
-      <DependentUpon>201606290031181_Initial1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607061358552_Initial2.cs" />
-    <Compile Include="Migrations\201607061358552_Initial2.Designer.cs">
-      <DependentUpon>201607061358552_Initial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607061744187_Initial3.cs" />
-    <Compile Include="Migrations\201607061744187_Initial3.Designer.cs">
-      <DependentUpon>201607061744187_Initial3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607061759530_Initial4.cs" />
-    <Compile Include="Migrations\201607061759530_Initial4.Designer.cs">
-      <DependentUpon>201607061759530_Initial4.cs</DependentUpon>
+    <Compile Include="Migrations\201607061958497_Initial.cs" />
+    <Compile Include="Migrations\201607061958497_Initial.Designer.cs">
+      <DependentUpon>201607061958497_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -268,16 +255,18 @@
     <Compile Include="Models\AlienzApiContext.cs" />
     <Compile Include="Models\DTO\BookDetailDTO.cs" />
     <Compile Include="Models\DTO\BookDTO.cs" />
+    <Compile Include="Models\DTO\GameStartDto.cs" />
+    <Compile Include="Models\DTO\LevelDto.cs" />
     <Compile Include="Models\ExampleModels\Author.cs" />
     <Compile Include="Models\ExampleModels\Book.cs" />
     <Compile Include="Models\GameModels\EnergyPurchase.cs" />
     <Compile Include="Models\GameModels\AdView.cs" />
     <Compile Include="Models\GameModels\AwardReason.cs" />
-    <Compile Include="Models\GameModels\BlockWall.cs" />
     <Compile Include="Models\GameModels\EnergyPackage.cs" />
     <Compile Include="Models\GameModels\EnergyPurchaseableItem.cs" />
     <Compile Include="Models\GameModels\LevelAttempt.cs" />
     <Compile Include="Models\GameModels\Player.cs" />
+    <Compile Include="Models\GameModels\PlayerDeath.cs" />
     <Compile Include="Models\GameModels\PlayerEnergyPackageAward.cs" />
     <Compile Include="Models\GameModels\PlayerEnergyPackagePurchase.cs" />
     <Compile Include="Models\GameModels\PlayerPowerupUsage.cs" />
@@ -363,20 +352,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606282345140_Initial.resx">
-      <DependentUpon>201606282345140_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606290031181_Initial1.resx">
-      <DependentUpon>201606290031181_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607061358552_Initial2.resx">
-      <DependentUpon>201607061358552_Initial2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607061744187_Initial3.resx">
-      <DependentUpon>201607061744187_Initial3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607061759530_Initial4.resx">
-      <DependentUpon>201607061759530_Initial4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607061958497_Initial.resx">
+      <DependentUpon>201607061958497_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

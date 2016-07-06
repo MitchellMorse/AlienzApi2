@@ -12,15 +12,10 @@ namespace AlienzApi.Models.GameModels
 
         [Required, Range(0, 9999)]
         public int SequenceInWorld { get; set; }
-
-        public int Tier2Score { get; set; }
-        public int Tier2Reward { get; set; }
-        public int Tier3Score { get; set; }
-        public int Tier3Reward { get; set; }
-        public int Tier1Reward { get; set; }
         public int StartingFuel { get; set; }
         public int StartingTime { get; set; }
         public bool Active { get; set; }
+        public bool IsBlockingLevel { get; set; }
 
         #region Navigation Properties
         public virtual ICollection<TierScoreReward> TierScoreRewards { get; set; } 

@@ -13,13 +13,10 @@ namespace AlienzApi.Tests.DbSets
     public class TestAlienzApiContext : IAlienzApiContext
     {
         public DbSet<Level> Levels { get;set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<LevelAttempt> LevelAttempts { get; set; }
 
         public void Dispose()
-        {
-            
-        }
-
-        public void MarkAsModified(Level level)
         {
             
         }
@@ -31,12 +28,19 @@ namespace AlienzApi.Tests.DbSets
 
         public Task<int> SaveChangesAsync()
         {
-            return new Task<int>(() => 0);
+            return Task.FromResult(0);
+        }
+
+        public void MarkAsModified<t>(t item) where t : class
+        {
+            
         }
 
         public TestAlienzApiContext()
         {
             this.Levels = new TestLevelDbSet();
+            this.Players = new TestPlayerDbSet();
+            this.LevelAttempts = new TestLevelAttemptDbSet();
         }
     }
 }

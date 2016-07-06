@@ -19,6 +19,8 @@ namespace AlienzApi.Models.GameModels
         public long Score { get; set; }
         [Required, Range(0, Int32.MaxValue)]
         public int TimeSeconds { get; set; }
+        [Required]
+        public bool Completed { get; set; }
 
         #region Navigation Properties
         public virtual Player Player { get; set; }

@@ -37,11 +37,16 @@ namespace AlienzApi.Models
         public DbSet<EnergyPackage> EnergyPackages { get; set; }
         public DbSet<PlayerPowerupUsage> PlayerPowerupUsages { get; set; }
         public DbSet<EnergyPurchaseableItem> EnergyPurchaseableItems { get; set; }
-        public DbSet<BlockWall> BlockWalls { get; set; }
         public DbSet<AdView> AdViews { get; set; }
         public DbSet<Powerup> Powerups { get; set; }
+        public DbSet<PlayerDeath> PlayerDeaths { get; set; }
 
-        public void MarkAsModified(Level item)
+        //public void MarkAsModified(Level item)
+        //{
+        //    Entry(item).State = EntityState.Modified;
+        //}
+
+        public void MarkAsModified<t>(t item) where t : class
         {
             Entry(item).State = EntityState.Modified;
         }

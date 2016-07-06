@@ -104,7 +104,9 @@
     <Compile Include="Controllers\TestLevelsController.cs" />
     <Compile Include="DbSets\InitialDbSet.cs" />
     <Compile Include="DbSets\TestAlienzApiContext.cs" />
+    <Compile Include="DbSets\TestLevelAttemptDbSet.cs" />
     <Compile Include="DbSets\TestLevelDbSet.cs" />
+    <Compile Include="DbSets\TestPlayerDbSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />

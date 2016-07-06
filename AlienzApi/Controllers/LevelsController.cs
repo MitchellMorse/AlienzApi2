@@ -96,20 +96,20 @@ namespace AlienzApi.Controllers
         }
 
         // DELETE: api/Levels/5
-        [ResponseType(typeof(Level))]
-        public async Task<IHttpActionResult> DeleteLevel(int id)
-        {
-            Level level = await db.Levels.FindAsync(id);
-            if (level == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(Level))]
+        //public async Task<IHttpActionResult> DeleteLevel(int id)
+        //{
+        //    Level level = await db.Levels.FindAsync(id);
+        //    if (level == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            db.Levels.Remove(level);
-            await db.SaveChangesAsync();
+        //    db.Levels.Remove(level);
+        //    await db.SaveChangesAsync();
 
-            return Ok(level);
-        }
+        //    return Ok(level);
+        //}
 
         protected override void Dispose(bool disposing)
         {

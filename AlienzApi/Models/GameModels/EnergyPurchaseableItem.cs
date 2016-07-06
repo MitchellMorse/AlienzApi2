@@ -22,11 +22,11 @@ namespace AlienzApi.Models.GameModels
         public int Quantity { get; set; }
         [Required]
         public bool Active { get; set; }
-        public int? BlockWallId { get; set; }
+        public int? LevelId { get; set; }
 
         #region Navigation Properties
-        public virtual ICollection<Powerup> Powerups { get; set; } 
-        public virtual ICollection<BlockWall> BlockWalls { get; set; } 
+        public virtual Powerup Powerups { get; set; } 
+        public virtual Level Level { get; set; } 
         #endregion
     }
 }
