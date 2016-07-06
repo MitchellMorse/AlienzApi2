@@ -26,7 +26,20 @@ namespace AlienzApi.Models
 
         public System.Data.Entity.DbSet<AlienzApi.Models.ExampleModels.Book> Books { get; set; }
 
-        public System.Data.Entity.DbSet<AlienzApi.Models.GameModels.Level> Levels { get; set; }
+        public DbSet<Level> Levels { get; set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<TierScoreReward> TierScoreRewards { get; set; }
+        public DbSet<EnergyPurchase> EnergyPurchases { get; set; }
+        public DbSet<LevelAttempt> LevelAttempts { get; set; }
+        public DbSet<PlayerEnergyPackageAward> PlayerEnergyPackageAwards { get; set; }
+        public DbSet<PlayerEnergyPackagePurchase> PlayerEnergyPackagePurchases { get; set; }
+        public DbSet<AwardReason> AwardReasons { get; set; }
+        public DbSet<EnergyPackage> EnergyPackages { get; set; }
+        public DbSet<PlayerPowerupUsage> PlayerPowerupUsages { get; set; }
+        public DbSet<EnergyPurchaseableItem> EnergyPurchaseableItems { get; set; }
+        public DbSet<BlockWall> BlockWalls { get; set; }
+        public DbSet<AdView> AdViews { get; set; }
+        public DbSet<Powerup> Powerups { get; set; }
 
         public void MarkAsModified(Level item)
         {

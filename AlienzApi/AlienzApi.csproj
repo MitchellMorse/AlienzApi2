@@ -250,6 +250,18 @@
     <Compile Include="Migrations\201606290031181_Initial1.Designer.cs">
       <DependentUpon>201606290031181_Initial1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607061358552_Initial2.cs" />
+    <Compile Include="Migrations\201607061358552_Initial2.Designer.cs">
+      <DependentUpon>201607061358552_Initial2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607061744187_Initial3.cs" />
+    <Compile Include="Migrations\201607061744187_Initial3.Designer.cs">
+      <DependentUpon>201607061744187_Initial3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607061759530_Initial4.cs" />
+    <Compile Include="Migrations\201607061759530_Initial4.Designer.cs">
+      <DependentUpon>201607061759530_Initial4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -258,6 +270,19 @@
     <Compile Include="Models\DTO\BookDTO.cs" />
     <Compile Include="Models\ExampleModels\Author.cs" />
     <Compile Include="Models\ExampleModels\Book.cs" />
+    <Compile Include="Models\GameModels\EnergyPurchase.cs" />
+    <Compile Include="Models\GameModels\AdView.cs" />
+    <Compile Include="Models\GameModels\AwardReason.cs" />
+    <Compile Include="Models\GameModels\BlockWall.cs" />
+    <Compile Include="Models\GameModels\EnergyPackage.cs" />
+    <Compile Include="Models\GameModels\EnergyPurchaseableItem.cs" />
+    <Compile Include="Models\GameModels\LevelAttempt.cs" />
+    <Compile Include="Models\GameModels\Player.cs" />
+    <Compile Include="Models\GameModels\PlayerEnergyPackageAward.cs" />
+    <Compile Include="Models\GameModels\PlayerEnergyPackagePurchase.cs" />
+    <Compile Include="Models\GameModels\PlayerPowerupUsage.cs" />
+    <Compile Include="Models\GameModels\Powerup.cs" />
+    <Compile Include="Models\GameModels\TierScoreReward.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\GameModels\Level.cs" />
     <Compile Include="Models\Interfaces\IAlienzApiContext.cs" />
@@ -343,6 +368,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606290031181_Initial1.resx">
       <DependentUpon>201606290031181_Initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607061358552_Initial2.resx">
+      <DependentUpon>201607061358552_Initial2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607061744187_Initial3.resx">
+      <DependentUpon>201607061744187_Initial3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607061759530_Initial4.resx">
+      <DependentUpon>201607061759530_Initial4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
