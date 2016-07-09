@@ -147,9 +147,11 @@ namespace AlienzApi.Tests.Controllers
             Assert.AreEqual(3, result.Local.Count);
         }
 
+        #region GetHighestCompletedLevelAttemptForPlayer
         [TestMethod]
         public void GetHighestCompletedLevelAttemptForPlayer_OneCompletedSecondNotTried()
         {
+            //Arrange
             var context = new AlienzApiContext();
             
             Level level1 = context.Levels.Add(new Level
@@ -205,24 +207,115 @@ namespace AlienzApi.Tests.Controllers
             LevelAttemptIdsToCleanup.AddRange(new List<int>() { savedAttempt.Id });
 
             LevelProvider provider = new LevelProvider(context);
+
+            //Act
             LevelAttempt attempt = provider.GetHighestCompletedLevelAttemptForPlayer(player.Id);
 
+            //Assert
             Assert.AreEqual(savedAttempt.Id, attempt.Id);
         }
 
-        //[TestMethod]
-        //public async void DeleteProduct_ShouldReturnOK()
-        //{
-        //    var context = new TestAlienzApiContext();
-        //    var item = GetDemoLevel();
-        //    context.Levels.Add(item);
+        [TestMethod]
+        public void GetHighestCompletedLevelAttemptForPlayer_NoneTried()
+        {
+            //Arrange
+            var context = new AlienzApiContext();
 
-        //    var controller = new LevelsController(context);
-        //    var result = await controller.DeleteLevel(3) as OkNegotiatedContentResult<Level>;
+            Level level1 = context.Levels.Add(new Level
+            {
+                World = 1,
+                SequenceInWorld = 1,
+                StartingFuel = 100,
+                StartingTime = 500,
+                Active = true,
+                IsBlockingLevel = false
+            });
 
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual(item.Id, result.Content.Id);
-        //}
+            context.SaveChanges();
+            LevelIdsToCleanup.AddRange(new List<int>() { level1.Id});
+
+            Player player = context.Players.Add(new Player());
+            context.SaveChanges();
+
+            PlayerIdsToCleanup.AddRange(new List<int>() { player.Id });
+
+            LevelProvider provider = new LevelProvider(context);
+
+            //Act
+            LevelAttempt attempt = provider.GetHighestCompletedLevelAttemptForPlayer(player.Id);
+
+            //Assert
+            Assert.AreEqual(null, attempt);
+        }
+
+        [TestMethod]
+        public void GetHighestCompletedLevelAttemptForPlayer_AllCompleted()
+        {
+            //Arrange
+            var context = new AlienzApiContext();
+
+            Level level1 = context.Levels.Add(new Level
+            {
+                World = 1,
+                SequenceInWorld = 1,
+                StartingFuel = 100,
+                StartingTime = 500,
+                Active = true,
+                IsBlockingLevel = false
+            });
+
+            Level level2 = context.Levels.Add(new Level
+            {
+                World = 1,
+                SequenceInWorld = 2,
+                StartingFuel = 100,
+                StartingTime = 500,
+                Active = true,
+                IsBlockingLevel = false
+            });
+
+            context.SaveChanges();
+            LevelIdsToCleanup.AddRange(new List<int>() { level1.Id, level2.Id});
+
+            Player player = context.Players.Add(new Player());
+            context.SaveChanges();
+
+            PlayerIdsToCleanup.AddRange(new List<int>() { player.Id });
+
+            LevelAttempt savedAttempt1 = context.LevelAttempts.Add(new LevelAttempt
+            {
+                LevelId = level1.Id,
+                PlayerId = player.Id,
+                Date = DateTime.Now,
+                TimesDied = 0,
+                Score = 100,
+                TimeSeconds = 100,
+                Completed = true
+            });
+
+            LevelAttempt savedAttempt2 = context.LevelAttempts.Add(new LevelAttempt
+            {
+                LevelId = level2.Id,
+                PlayerId = player.Id,
+                Date = DateTime.Now,
+                TimesDied = 0,
+                Score = 100,
+                TimeSeconds = 100,
+                Completed = true
+            });
+
+            context.SaveChanges();
+            LevelAttemptIdsToCleanup.AddRange(new List<int>() { savedAttempt1.Id, savedAttempt2.Id });
+
+            LevelProvider provider = new LevelProvider(context);
+
+            //Act
+            LevelAttempt attempt = provider.GetHighestCompletedLevelAttemptForPlayer(player.Id);
+
+            //Assert
+            Assert.AreEqual(savedAttempt2.Id, attempt.Id);
+        }
+        #endregion
 
         Level GetDemoLevel()
         {

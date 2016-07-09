@@ -72,8 +72,8 @@ namespace AlienzApi.Business
         {
             LevelAttempt highestCompletedLevelAttempt =
                 db.LevelAttempts.Include(l => l.Level).Where(l => l.PlayerId == playerId && l.Completed)
-                    .OrderBy(l => l.Level.World)
-                    .ThenBy(l => l.Level.SequenceInWorld)
+                    .OrderByDescending(l => l.Level.World)
+                    .ThenByDescending(l => l.Level.SequenceInWorld)
                     .FirstOrDefault();
 
             return highestCompletedLevelAttempt;
