@@ -28,7 +28,7 @@ namespace AlienzApi.Tests.Controllers
         #endregion
 
         [TestCleanup]
-        protected void CleanupTests()
+        public void CleanupTests()
         {
             CleanTests();
         }
@@ -214,7 +214,7 @@ namespace AlienzApi.Tests.Controllers
         #region GetAllLevelsInWorld
 
         [TestMethod]
-        public void GetAllLevelsInWorld_3Levels()
+        public void GetAllLevelsInWorld_3LevelsNoAttempts()
         {
             //Arrange
             Level level1 = GetTestLevel();
@@ -231,7 +231,43 @@ namespace AlienzApi.Tests.Controllers
 
             //Assert
             int expectedCount = 3;
-            Assert.AreEqual(expectedCount, levels.Count);  //TODO: this is not getting back any results
+            int expectedTier1Reward = 1;
+            int expectedTier2Reward = 2;
+            int expectedTier3Reward = 3;
+            Assert.AreEqual(expectedCount, levels.Count);
+            Assert.AreEqual(expectedTier1Reward, levels.Single(l => l.Sequence == 1).Tier1Reward);
+            Assert.AreEqual(expectedTier2Reward, levels.Single(l => l.Sequence == 2).Tier2Reward);
+            Assert.AreEqual(expectedTier3Reward, levels.Single(l => l.Sequence == 1).Tier3Reward);
+        }
+
+        [TestMethod]
+        public void GetAllLevelsInWorld_3LevelsLevel1Completed2Attempts()
+        {
+            //Arrange
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld: 2);
+            Level level3 = GetTestLevel(sequenceInWorld: 3);
+            Setup3TiersForLevel(level1.Id);
+            Setup3TiersForLevel(level2.Id);
+            Setup3TiersForLevel(level3.Id);
+            Player player = GetTestPlayer();
+            LevelAttempt attemptFailed = GetTestLevelAttempt(player.Id, level1.Id, score: 543, timeSeconds: 543,
+                completed: false, timesDied:5);
+            LevelAttempt attemptSuccess = GetTestLevelAttempt(player.Id, level1.Id, score: 1022, timeSeconds: 325,
+                completed: true);
+
+            LevelProvider provider = new LevelProvider(_context);
+
+            //Act
+            ICollection<LevelDto> levels = provider.GetAllLevelsInWorld(_testWorldId);
+
+            //Assert
+            int expectedCount = 3;
+            int expectedLevel1HighScore = 1022;
+            int expectedLevel2HighScore = 0;
+            Assert.AreEqual(expectedCount, levels.Count);
+            Assert.AreEqual(expectedLevel1HighScore, levels.Single(l => l.Sequence == 1).PlayerHighScore);
+            Assert.AreEqual(expectedLevel2HighScore, levels.Single(l => l.Sequence == 2).PlayerHighScore);
         }
         #endregion
 

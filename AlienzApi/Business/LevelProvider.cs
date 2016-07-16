@@ -82,11 +82,12 @@ namespace AlienzApi.Business
                     join tier3Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 3 } equals
                         new { tier3Info.LevelId, tier3Info.TierNumber }
                     join tier3AwardReason in db.AwardReasons on tier3Info.AwardReasonId equals tier3AwardReason.Id
-                    join levelAttempts in db.LevelAttempts on level.Id equals levelAttempts.LevelId
-                    where level.World == worldId
+                    from levelAttempts in db.LevelAttempts.Where(la => la.LevelId == level.Id).DefaultIfEmpty()
+                    //from lowerScoreLevelAttempts in db.LevelAttempts.Where(la => la.Id != levelAttempts.Id && la.LevelId == levelAttempts.LevelId && la.Score <= levelAttempts.Score)
+                    where level.World == worldId// && lowerScoreLevelAttempts == null
                     select new LevelDto()
                     {
-                        PlayerHighScore = levelAttempts.Score,
+                        PlayerHighScore = levelAttempts != null ? levelAttempts.Score : 0,
                         Sequence = level.SequenceInWorld,
                         StartingFuel = level.StartingFuel,
                         StartingTimeSeconds = level.StartingTime,

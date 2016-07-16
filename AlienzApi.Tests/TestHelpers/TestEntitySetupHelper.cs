@@ -191,7 +191,7 @@ namespace AlienzApi.Tests.TestHelpers
             List<TierScoreReward> tiers = new List<TierScoreReward>();
             for (int i = 0; i < 3; i++)
             {
-                AwardReason reason = GetTestAwardReason($"Tier {i}");
+                AwardReason reason = GetTestAwardReason($"Tier {i + 1}", i + 1);
                 tiers.Add(GetTestTierScoreReward(levelId, reason.Id, i + 1));
             }
 
