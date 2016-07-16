@@ -16,114 +16,48 @@ namespace AlienzApi.Migrations
 
         protected override void Seed(AlienzApi.Models.AlienzApiContext context)
         {
-            context.Levels.AddOrUpdate(x => x.Id,
-                new Level()
-                {
-                    Id = 1,
-                    SequenceInWorld = 1,
-                    World = 1,
-                    StartingFuel = 100,
-                    StartingTime = 2000,
-                    Active = true,
-                    IsBlockingLevel = false
-                },
-                new Level()
-                {
-                    Id = 2,
-                    SequenceInWorld = 2,
-                    World = 1,
-                    StartingFuel = 200,
-                    StartingTime = 2000,
-                    Active = true,
-                    IsBlockingLevel = false
-                },
-                new Level()
-                {
-                    Id = 3,
-                    SequenceInWorld = 3,
-                    World = 1,
-                    StartingFuel = 100,
-                    StartingTime = 2000,
-                    Active = true,
-                    IsBlockingLevel = false
-                },
-                new Level()
-                {
-                    Id = 4,
-                    SequenceInWorld = 4,
-                    World = 1,
-                    StartingFuel = 100,
-                    StartingTime = 2000,
-                    Active = true,
-                    IsBlockingLevel = true
-                }
-                );
-
-            context.TierScoreRewards.AddOrUpdate(
-                new TierScoreReward()
-                {
-                    Id = 1,
-                    TierNumber = 1,
-                    Score = 500,
-                    LevelId = 1
-                },
-                new TierScoreReward()
-                {
-                    Id = 2,
-                    TierNumber = 2,
-                    Score = 1000,
-                    LevelId = 1
-                },
-                new TierScoreReward()
-                {
-                    Id = 3,
-                    TierNumber = 3,
-                    Score = 1200,
-                    LevelId = 1
-                },
-                new TierScoreReward()
-                {
-                    Id = 4,
-                    TierNumber = 1,
-                    Score = 800,
-                    LevelId = 2
-                },
-                new TierScoreReward()
-                {
-                    Id = 5,
-                    TierNumber = 2,
-                    Score = 1000,
-                    LevelId = 2
-                },
-                new TierScoreReward()
-                {
-                    Id = 6,
-                    TierNumber = 3,
-                    Score = 1200,
-                    LevelId = 2
-                },
-                new TierScoreReward()
-                {
-                    Id = 7,
-                    TierNumber = 1,
-                    Score = 500,
-                    LevelId = 3
-                },
-                new TierScoreReward()
-                {
-                    Id = 8,
-                    TierNumber = 2,
-                    Score = 1000,
-                    LevelId = 3
-                },
-                new TierScoreReward()
-                {
-                    Id = 9,
-                    TierNumber = 3,
-                    Score = 1200,
-                    LevelId = 3
-                }
-                );
+            //context.Levels.AddOrUpdate(x => x.Id,
+            //    new Level()
+            //    {
+            //        Id = 1,
+            //        SequenceInWorld = 1,
+            //        World = 1,
+            //        StartingFuel = 100,
+            //        StartingTime = 2000,
+            //        Active = true,
+            //        IsBlockingLevel = false
+            //    },
+            //    new Level()
+            //    {
+            //        Id = 2,
+            //        SequenceInWorld = 2,
+            //        World = 1,
+            //        StartingFuel = 200,
+            //        StartingTime = 2000,
+            //        Active = true,
+            //        IsBlockingLevel = false
+            //    },
+            //    new Level()
+            //    {
+            //        Id = 3,
+            //        SequenceInWorld = 3,
+            //        World = 1,
+            //        StartingFuel = 100,
+            //        StartingTime = 2000,
+            //        Active = true,
+            //        IsBlockingLevel = false
+            //    },
+            //    new Level()
+            //    {
+            //        Id = 4,
+            //        SequenceInWorld = 4,
+            //        World = 1,
+            //        StartingFuel = 100,
+            //        StartingTime = 2000,
+            //        Active = true,
+            //        IsBlockingLevel = true
+            //    }
+            //    );
 
             context.AwardReasons.AddOrUpdate(
                 new AwardReason()
@@ -131,90 +65,112 @@ namespace AlienzApi.Migrations
                     Id = 1,
                     Name = "AdView",
                     EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = null
+                    Active = true
                 },
                 new AwardReason()
                 {
                     Id = 2,
                     Name = "InviteFriend",
                     EnergyRewardAmount = 2,
-                    Active = true,
-                    TierScoreRewardId = null
+                    Active = true
                 },
                 new AwardReason()
                 {
                     Id = 3,
-                    Name = "TierCompleted",
+                    Name = "Tier1Completed",
                     EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 1
+                    Active = true
                 },
                 new AwardReason()
                 {
-                    Id = 3,
-                    Name = "TierCompleted",
+                    Id = 4,
+                    Name = "Tier2Completed",
                     EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 2
+                    Active = true
                 },
                 new AwardReason()
                 {
-                    Id = 3,
-                    Name = "TierCompleted",
+                    Id = 5,
+                    Name = "Tier3Completed",
                     EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 3
-                },
-                new AwardReason()
-                {
-                    Id = 3,
-                    Name = "TierCompleted",
-                    EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 4
-                },
-                new AwardReason()
-                {
-                    Id = 3,
-                    Name = "TierCompleted",
-                    EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 5
-                },
-                new AwardReason()
-                {
-                    Id = 3,
-                    Name = "TierCompleted",
-                    EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 6
-                },
-                new AwardReason()
-                {
-                    Id = 3,
-                    Name = "TierCompleted",
-                    EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 7
-                },
-                new AwardReason()
-                {
-                    Id = 3,
-                    Name = "TierCompleted",
-                    EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 8
-                },
-                new AwardReason()
-                {
-                    Id = 3,
-                    Name = "TierCompleted",
-                    EnergyRewardAmount = 1,
-                    Active = true,
-                    TierScoreRewardId = 9
+                    Active = true
                 }
                 );
+
+            //context.TierScoreRewards.AddOrUpdate(
+            //    new TierScoreReward()
+            //    {
+            //        Id = 1,
+            //        TierNumber = 1,
+            //        Score = 500,
+            //        LevelId = 1,
+            //        AwardReasonId = 3
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 2,
+            //        TierNumber = 2,
+            //        Score = 1000,
+            //        LevelId = 1,
+            //        AwardReasonId = 4
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 3,
+            //        TierNumber = 3,
+            //        Score = 1200,
+            //        LevelId = 1,
+            //        AwardReasonId = 5
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 4,
+            //        TierNumber = 1,
+            //        Score = 800,
+            //        LevelId = 2,
+            //        AwardReasonId = 3
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 5,
+            //        TierNumber = 2,
+            //        Score = 1000,
+            //        LevelId = 2,
+            //        AwardReasonId = 4
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 6,
+            //        TierNumber = 3,
+            //        Score = 1200,
+            //        LevelId = 2,
+            //        AwardReasonId = 5
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 7,
+            //        TierNumber = 1,
+            //        Score = 500,
+            //        LevelId = 3,
+            //        AwardReasonId = 3
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 8,
+            //        TierNumber = 2,
+            //        Score = 1000,
+            //        LevelId = 3,
+            //        AwardReasonId = 4
+            //    },
+            //    new TierScoreReward()
+            //    {
+            //        Id = 9,
+            //        TierNumber = 3,
+            //        Score = 1200,
+            //        LevelId = 3,
+            //        AwardReasonId = 5
+            //    }
+            //    );
 
             context.EnergyPackages.AddOrUpdate(
                 new EnergyPackage()
@@ -261,16 +217,16 @@ namespace AlienzApi.Migrations
                 );
 
             context.EnergyPurchaseableItems.AddOrUpdate(
-                new EnergyPurchaseableItem()
-                {
-                    Id = 1,
-                    Name = "BlockWall",
-                    PowerupId = null,
-                    Quantity = 1,
-                    EnergyCost = 5,
-                    Active = true,
-                    LevelId = 4
-                },
+                //new EnergyPurchaseableItem()
+                //{
+                //    Id = 1,
+                //    Name = "BlockWall",
+                //    PowerupId = null,
+                //    Quantity = 1,
+                //    EnergyCost = 5,
+                //    Active = true,
+                //    LevelId = 4
+                //},
                 new EnergyPurchaseableItem()
                 {
                     Id = 2,

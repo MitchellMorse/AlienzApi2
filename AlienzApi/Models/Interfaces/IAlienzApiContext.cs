@@ -10,6 +10,8 @@ namespace AlienzApi.Models.Interfaces
         DbSet<Level> Levels { get; }
         DbSet<Player> Players { get; }
         DbSet<LevelAttempt> LevelAttempts { get; }
+        DbSet<TierScoreReward> TierScoreRewards { get; }
+        DbSet<AwardReason> AwardReasons { get; }
         int SaveChanges();
         Task<int> SaveChangesAsync();
         void MarkAsModified<t>(t item) where t : class;

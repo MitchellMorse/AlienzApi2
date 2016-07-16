@@ -15,6 +15,8 @@ namespace AlienzApi.Tests.DbSets
         public DbSet<Level> Levels { get;set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<LevelAttempt> LevelAttempts { get; set; }
+        public DbSet<TierScoreReward> TierScoreRewards { get; set; }
+        public DbSet<AwardReason> AwardReasons { get; set; }
 
         public void Dispose()
         {
@@ -41,6 +43,7 @@ namespace AlienzApi.Tests.DbSets
             this.Levels = new TestLevelDbSet();
             this.Players = new TestPlayerDbSet();
             this.LevelAttempts = new TestLevelAttemptDbSet();
+            this.TierScoreRewards = new TestTierScoreRewardDbSet();
         }
     }
 }

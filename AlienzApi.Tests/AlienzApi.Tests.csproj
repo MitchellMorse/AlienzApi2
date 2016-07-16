@@ -104,12 +104,15 @@
     <Compile Include="Controllers\TestLevelsController.cs" />
     <Compile Include="DbSets\InitialDbSet.cs" />
     <Compile Include="DbSets\TestAlienzApiContext.cs" />
+    <Compile Include="DbSets\TestAwardReasonDbSet.cs" />
     <Compile Include="DbSets\TestLevelAttemptDbSet.cs" />
     <Compile Include="DbSets\TestLevelDbSet.cs" />
     <Compile Include="DbSets\TestPlayerDbSet.cs" />
+    <Compile Include="DbSets\TestTierScoreRewardDbSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />
+    <Compile Include="TestHelpers\TestEntitySetupHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

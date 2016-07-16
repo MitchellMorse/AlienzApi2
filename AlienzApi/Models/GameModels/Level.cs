@@ -7,10 +7,10 @@ namespace AlienzApi.Models.GameModels
     {
         public int Id { get; set; }
 
-        [Required, Range(0, 9999)]
+        [Required, Range(0, 99999)]
         public int World { get; set; }
 
-        [Required, Range(0, 9999)]
+        [Required, Range(0, 99999)]
         public int SequenceInWorld { get; set; }
         public int StartingFuel { get; set; }
         public int StartingTime { get; set; }

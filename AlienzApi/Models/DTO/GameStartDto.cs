@@ -7,7 +7,8 @@ namespace AlienzApi.Models.DTO
 {
     public class GameStartDto
     {
-        public LevelDto CurrentLevel { get; set; }
+        public ICollection<LevelDto> AllLevelsInCurrentWorld { get; set; }  
+        public int CurrentLevelId { get; set; }
         public int PlayerLives { get; set; }
         public ICollection<KeyValuePair<string, int>> PowerupCount { get; set; }
     }

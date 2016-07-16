@@ -36,11 +36,8 @@ namespace AlienzApi.Migrations
                         Name = c.String(nullable: false),
                         EnergyRewardAmount = c.Int(nullable: false),
                         Active = c.Boolean(nullable: false),
-                        TierScoreRewardId = c.Int(),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TierScoreRewards", t => t.TierScoreRewardId)
-                .Index(t => t.TierScoreRewardId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.TierScoreRewards",
@@ -50,10 +47,13 @@ namespace AlienzApi.Migrations
                         TierNumber = c.Int(nullable: false),
                         Score = c.Long(nullable: false),
                         LevelId = c.Int(nullable: false),
+                        AwardReasonId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AwardReasons", t => t.AwardReasonId, cascadeDelete: true)
                 .ForeignKey("dbo.Levels", t => t.LevelId, cascadeDelete: true)
-                .Index(t => t.LevelId);
+                .Index(t => t.LevelId)
+                .Index(t => t.AwardReasonId);
             
             CreateTable(
                 "dbo.Levels",
@@ -249,7 +249,7 @@ namespace AlienzApi.Migrations
             DropForeignKey("dbo.EnergyPurchaseableItems", "LevelId", "dbo.Levels");
             DropForeignKey("dbo.AdViews", "PlayerId", "dbo.Players");
             DropForeignKey("dbo.LevelAttempts", "LevelId", "dbo.Levels");
-            DropForeignKey("dbo.AwardReasons", "TierScoreRewardId", "dbo.TierScoreRewards");
+            DropForeignKey("dbo.TierScoreRewards", "AwardReasonId", "dbo.AwardReasons");
             DropIndex("dbo.PlayerDeaths", new[] { "PlayerId" });
             DropIndex("dbo.PlayerDeaths", new[] { "LevelAttemptId" });
             DropIndex("dbo.Books", new[] { "AuthorId" });
@@ -266,8 +266,8 @@ namespace AlienzApi.Migrations
             DropIndex("dbo.EnergyPurchases", new[] { "PlayerId" });
             DropIndex("dbo.LevelAttempts", new[] { "LevelId" });
             DropIndex("dbo.LevelAttempts", new[] { "PlayerId" });
+            DropIndex("dbo.TierScoreRewards", new[] { "AwardReasonId" });
             DropIndex("dbo.TierScoreRewards", new[] { "LevelId" });
-            DropIndex("dbo.AwardReasons", new[] { "TierScoreRewardId" });
             DropIndex("dbo.AdViews", new[] { "PlayerId" });
             DropTable("dbo.PlayerDeaths");
             DropTable("dbo.Books");

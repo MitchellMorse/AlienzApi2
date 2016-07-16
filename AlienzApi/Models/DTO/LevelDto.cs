@@ -11,10 +11,10 @@ namespace AlienzApi.Models.DTO
         public int Sequence { get; set; }
         public int StartingFuel { get; set; }
         public int StartingTimeSeconds { get; set; }
-        public int PlayerHighScore { get; set; }
-        public int Tier1Score { get; set; }
-        public int Tier2Score { get; set; }
-        public int Tier3Score { get; set; }
+        public long PlayerHighScore { get; set; }
+        public long Tier1Score { get; set; }
+        public long Tier2Score { get; set; }
+        public long Tier3Score { get; set; }
         public int Tier1Reward { get; set; }
         public int Tier2Reward { get; set; }
         public int Tier3Reward { get; set; }

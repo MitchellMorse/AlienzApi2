@@ -9,92 +9,36 @@ using System.Web.Http.Results;
 using AlienzApi.Business;
 using AlienzApi.Controllers;
 using AlienzApi.Models;
+using AlienzApi.Models.DTO;
 using AlienzApi.Models.GameModels;
+using AlienzApi.Models.Interfaces;
 using AlienzApi.Tests.DbSets;
+using AlienzApi.Tests.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AlienzApi.Tests.Controllers
 {
     [TestClass]
-    public class TestLevelsController
+    public class TestLevelsController : AlienzTester
     {
-        private List<int> LevelAttemptIdsToCleanup { get; set; }
-        private List<int> LevelIdsToCleanup { get; set; }
-        private List<int> PlayerIdsToCleanup { get; set; }
+        #region AliensTester
 
-        private void ResetLists()
+        protected override IAlienzApiContext DbContext => new AlienzApiContext();
+
+        #endregion
+
+        [TestCleanup]
+        protected void CleanupTests()
         {
-            LevelAttemptIdsToCleanup = new List<int>();
-            LevelIdsToCleanup = new List<int>();
-            PlayerIdsToCleanup = new List<int>();
+            CleanTests();
         }
 
         [TestInitialize]
         public void InitTests()
         {
+            InitializeDbContext();
             ResetLists();
         }
-
-        [TestCleanup]
-        public void CleanupTests()
-        {
-            var db = new AlienzApiContext();
-
-            if (LevelAttemptIdsToCleanup.Any())
-            {
-                var levelAttempts = db.LevelAttempts.Where(l => LevelAttemptIdsToCleanup.Contains(l.Id));
-
-                foreach (var attempt in levelAttempts)
-                {
-                    db.LevelAttempts.Remove(attempt);
-                }
-
-                db.SaveChanges();
-            }
-
-            if (LevelIdsToCleanup.Any())
-            {
-                var levels = db.Levels.Where(l => LevelIdsToCleanup.Contains(l.Id));
-
-                foreach (var level in levels)
-                {
-                    db.Levels.Remove(level);
-                }
-
-                db.SaveChanges();
-            }
-
-            if (PlayerIdsToCleanup.Any())
-            {
-                var players = db.Players.Where(l => PlayerIdsToCleanup.Contains(l.Id));
-
-                foreach (var player in players)
-                {
-                    db.Players.Remove(player);
-                }
-
-                db.SaveChanges();
-            }
-
-            ResetLists();
-        }
-
-        //[TestMethod]
-        //public async void PostProduct_ShouldReturnSameProduct()
-        //{
-        //    var controller = new LevelsController(new TestAlienzApiContext());
-
-        //    var item = GetDemoLevel();
-
-        //    var result =
-        //        await controller.PostLevel(item) as CreatedAtRouteNegotiatedContentResult<Level>;
-
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual(result.RouteName, "DefaultApi");
-        //    Assert.AreEqual(result.RouteValues["id"], result.Content.Id);
-        //    Assert.AreEqual(result.Content.World, item.World);
-        //    Assert.AreEqual(result.Content.SequenceInWorld, item.SequenceInWorld);
-        //}
 
         [TestMethod]
         public async Task PutProduct_ShouldReturnStatusCode()
@@ -152,61 +96,13 @@ namespace AlienzApi.Tests.Controllers
         public void GetHighestCompletedLevelAttemptForPlayer_OneCompletedSecondNotTried()
         {
             //Arrange
-            var context = new AlienzApiContext();
-            
-            Level level1 = context.Levels.Add(new Level
-            {
-                World = 1,
-                SequenceInWorld = 1,
-                StartingFuel = 100,
-                StartingTime = 500,
-                Active = true,
-                IsBlockingLevel = false
-            });
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld: 2);
+            Level level3 = GetTestLevel(sequenceInWorld: 3);
+            Player player = GetTestPlayer();
+            LevelAttempt savedAttempt = GetTestLevelAttempt(player.Id, level1.Id, completed: true);
 
-            Level level2 = context.Levels.Add(new Level
-            {
-                World = 1,
-                SequenceInWorld = 2,
-                StartingFuel = 100,
-                StartingTime = 500,
-                Active = true,
-                IsBlockingLevel = false
-            });
-
-            Level level3 = context.Levels.Add(new Level
-            {
-                World = 1,
-                SequenceInWorld = 3,
-                StartingFuel = 100,
-                StartingTime = 500,
-                Active = true,
-                IsBlockingLevel = false
-            });
-
-            context.SaveChanges();
-            LevelIdsToCleanup.AddRange(new List<int>() { level1.Id, level2.Id, level3.Id });
-
-            Player player = context.Players.Add(new Player());
-            context.SaveChanges();
-
-            PlayerIdsToCleanup.AddRange(new List<int>() { player.Id });
-
-            LevelAttempt savedAttempt = context.LevelAttempts.Add(new LevelAttempt
-            {
-                LevelId = level1.Id,
-                PlayerId = player.Id,
-                Date = DateTime.Now,
-                TimesDied = 0,
-                Score = 100,
-                TimeSeconds = 100,
-                Completed = true
-            });
-
-            context.SaveChanges();
-            LevelAttemptIdsToCleanup.AddRange(new List<int>() { savedAttempt.Id });
-
-            LevelProvider provider = new LevelProvider(context);
+            LevelProvider provider = new LevelProvider(_context);
 
             //Act
             LevelAttempt attempt = provider.GetHighestCompletedLevelAttemptForPlayer(player.Id);
@@ -219,27 +115,10 @@ namespace AlienzApi.Tests.Controllers
         public void GetHighestCompletedLevelAttemptForPlayer_NoneTried()
         {
             //Arrange
-            var context = new AlienzApiContext();
+            Level level1 = GetTestLevel();
+            Player player = GetTestPlayer();
 
-            Level level1 = context.Levels.Add(new Level
-            {
-                World = 1,
-                SequenceInWorld = 1,
-                StartingFuel = 100,
-                StartingTime = 500,
-                Active = true,
-                IsBlockingLevel = false
-            });
-
-            context.SaveChanges();
-            LevelIdsToCleanup.AddRange(new List<int>() { level1.Id});
-
-            Player player = context.Players.Add(new Player());
-            context.SaveChanges();
-
-            PlayerIdsToCleanup.AddRange(new List<int>() { player.Id });
-
-            LevelProvider provider = new LevelProvider(context);
+            LevelProvider provider = new LevelProvider(_context);
 
             //Act
             LevelAttempt attempt = provider.GetHighestCompletedLevelAttemptForPlayer(player.Id);
@@ -252,62 +131,14 @@ namespace AlienzApi.Tests.Controllers
         public void GetHighestCompletedLevelAttemptForPlayer_AllCompleted()
         {
             //Arrange
-            var context = new AlienzApiContext();
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld: 2);
+            Player player = GetTestPlayer();
 
-            Level level1 = context.Levels.Add(new Level
-            {
-                World = 1,
-                SequenceInWorld = 1,
-                StartingFuel = 100,
-                StartingTime = 500,
-                Active = true,
-                IsBlockingLevel = false
-            });
+            LevelAttempt savedAttempt1 = GetTestLevelAttempt(player.Id, level1.Id, completed: true);
+            LevelAttempt savedAttempt2 = GetTestLevelAttempt(player.Id, level2.Id, completed: true);
 
-            Level level2 = context.Levels.Add(new Level
-            {
-                World = 1,
-                SequenceInWorld = 2,
-                StartingFuel = 100,
-                StartingTime = 500,
-                Active = true,
-                IsBlockingLevel = false
-            });
-
-            context.SaveChanges();
-            LevelIdsToCleanup.AddRange(new List<int>() { level1.Id, level2.Id});
-
-            Player player = context.Players.Add(new Player());
-            context.SaveChanges();
-
-            PlayerIdsToCleanup.AddRange(new List<int>() { player.Id });
-
-            LevelAttempt savedAttempt1 = context.LevelAttempts.Add(new LevelAttempt
-            {
-                LevelId = level1.Id,
-                PlayerId = player.Id,
-                Date = DateTime.Now,
-                TimesDied = 0,
-                Score = 100,
-                TimeSeconds = 100,
-                Completed = true
-            });
-
-            LevelAttempt savedAttempt2 = context.LevelAttempts.Add(new LevelAttempt
-            {
-                LevelId = level2.Id,
-                PlayerId = player.Id,
-                Date = DateTime.Now,
-                TimesDied = 0,
-                Score = 100,
-                TimeSeconds = 100,
-                Completed = true
-            });
-
-            context.SaveChanges();
-            LevelAttemptIdsToCleanup.AddRange(new List<int>() { savedAttempt1.Id, savedAttempt2.Id });
-
-            LevelProvider provider = new LevelProvider(context);
+            LevelProvider provider = new LevelProvider(_context);
 
             //Act
             LevelAttempt attempt = provider.GetHighestCompletedLevelAttemptForPlayer(player.Id);
@@ -317,11 +148,98 @@ namespace AlienzApi.Tests.Controllers
         }
         #endregion
 
+        #region GetNextNonCompleteLevel
+
+        [TestMethod]
+        public void GetNextNonCompleteLevel_OneLevelCompleted()
+        {
+            //Arrange
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld:2);
+            Level level3 = GetTestLevel(sequenceInWorld:3);
+            Player player = GetTestPlayer();
+            LevelAttempt savedAttempt = GetTestLevelAttempt(player.Id, level1.Id, completed: true);
+            LevelProvider provider = new LevelProvider(_context);
+
+            //Act
+            Level nextLevel = provider.GetNextNonCompleteLevel(player.Id);
+
+            //Assert
+            Assert.AreEqual(level2.Id, nextLevel.Id);
+        }
+
+        [TestMethod]
+        public void GetNextNonCompleteLevel_AllLevelsCompleted()
+        {
+            //Arrange
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld: 2);
+            Player player = GetTestPlayer();
+            LevelAttempt savedAttempt = GetTestLevelAttempt(player.Id, level1.Id, completed: true);
+            LevelAttempt savedAttempt2 = GetTestLevelAttempt(player.Id, level2.Id, completed: true);
+
+            LevelProvider provider = new LevelProvider(_context);
+
+            //Act
+            Level nextLevel = provider.GetNextNonCompleteLevel(player.Id);
+
+            //Assert
+            Assert.AreEqual(level2.Id, nextLevel.Id);
+        }
+        #endregion
+
+        #region GetOrderedLevels
+        [TestMethod]
+        public void GetOrderedLevels_MultipleLevelsInTwoWorlds()
+        {
+            //Arrange
+            Level level1 = GetTestLevel(10000, 2);
+            Level level2 = GetTestLevel();
+            Level level3 = GetTestLevel(10000);
+
+            LevelProvider provider = new LevelProvider(_context);
+
+            //Act
+            List<Level> levels = provider.GetOrderedLevels().ToList();
+
+            //Assert
+            int level1Index = levels.FindIndex(l => l.Id == level1.Id);
+            int level2Index = levels.FindIndex(l => l.Id == level2.Id);
+            int level3Index = levels.FindIndex(l => l.Id == level3.Id);
+
+            Assert.IsTrue(level1Index > level2Index && level1Index > level3Index && level2Index < level3Index);
+        }
+        #endregion
+
+        #region GetAllLevelsInWorld
+
+        [TestMethod]
+        public void GetAllLevelsInWorld_3Levels()
+        {
+            //Arrange
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld: 2);
+            Level level3 = GetTestLevel(sequenceInWorld: 3);
+            Setup3TiersForLevel(level1.Id);
+            Setup3TiersForLevel(level2.Id);
+            Setup3TiersForLevel(level3.Id);
+
+            LevelProvider provider = new LevelProvider(_context);
+
+            //Act
+            ICollection<LevelDto> levels = provider.GetAllLevelsInWorld(_testWorldId);
+
+            //Assert
+            int expectedCount = 3;
+            Assert.AreEqual(expectedCount, levels.Count);  //TODO: this is not getting back any results
+        }
+        #endregion
+
         Level GetDemoLevel()
         {
             return new Level()
             {
-                Id = 3, World = 1, SequenceInWorld = 3, StartingTime = 100, StartingFuel = 100
+                Id = 3, World = _testWorldId, SequenceInWorld = 3, StartingTime = 100, StartingFuel = 100
             };
         }
     }

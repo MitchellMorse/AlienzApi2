@@ -13,7 +13,7 @@ namespace AlienzApi.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201607061958497_Initial"; }
+            get { return "201607160317507_Initial"; }
         }
         
         string IMigrationMetadata.Source

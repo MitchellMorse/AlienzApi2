@@ -12,10 +12,12 @@ namespace AlienzApi.Models.GameModels
         public long Score { get; set; }
         [Required]
         public int LevelId { get; set; }
+        [Required]
+        public int AwardReasonId { get; set; }
 
         #region Navigation Properties
         public virtual Level Level { get; set; }
-        public virtual ICollection<AwardReason> AwardReasons { get; set; }
+        public virtual AwardReason AwardReason { get; set; }
         #endregion
     }
 }

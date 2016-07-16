@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AlienzApi.Models.GameModels
@@ -14,10 +15,9 @@ namespace AlienzApi.Models.GameModels
         public int EnergyRewardAmount { get; set; }
         [Required]
         public bool Active { get; set; }
-        public int? TierScoreRewardId { get; set; }
 
         #region Navigation Properties
-        public virtual TierScoreReward TierScoreReward { get; set; }
+        public virtual List<TierScoreReward> TierScoreRewards { get; set; }
         #endregion
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using AlienzApi.Models;
+using AlienzApi.Models.DTO;
 using AlienzApi.Models.GameModels;
 using AlienzApi.Models.Interfaces;
 
@@ -60,14 +62,43 @@ namespace AlienzApi.Business
                 {
                     //the player has completed all levels, so just return the last level
                     nextLevel =
-                        orderedLevels
-                            .Last();
+                        orderedLevels.OrderByDescending(o => o.World).ThenByDescending(o => o.SequenceInWorld)
+                            .First();
                 }
             }
 
             return nextLevel;
         }
-        
+
+        public ICollection<LevelDto> GetAllLevelsInWorld(int worldId)
+        {
+            return (from level in db.Levels
+                    join tier1Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 1 } equals
+                        new { tier1Info.LevelId, tier1Info.TierNumber }
+                    join tier1AwardReason in db.AwardReasons on tier1Info.AwardReasonId equals tier1AwardReason.Id
+                    join tier2Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 2 } equals
+                        new { tier2Info.LevelId, tier2Info.TierNumber }
+                    join tier2AwardReason in db.AwardReasons on tier2Info.AwardReasonId equals tier2AwardReason.Id
+                    join tier3Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 3 } equals
+                        new { tier3Info.LevelId, tier3Info.TierNumber }
+                    join tier3AwardReason in db.AwardReasons on tier3Info.AwardReasonId equals tier3AwardReason.Id
+                    join levelAttempts in db.LevelAttempts on level.Id equals levelAttempts.LevelId
+                    where level.World == worldId
+                    select new LevelDto()
+                    {
+                        PlayerHighScore = levelAttempts.Score,
+                        Sequence = level.SequenceInWorld,
+                        StartingFuel = level.StartingFuel,
+                        StartingTimeSeconds = level.StartingTime,
+                        Tier1Reward = tier1AwardReason.EnergyRewardAmount,
+                        Tier1Score = tier1Info.Score,
+                        Tier2Reward = tier2AwardReason.EnergyRewardAmount,
+                        Tier2Score = tier2Info.Score,
+                        Tier3Reward = tier3AwardReason.EnergyRewardAmount,
+                        Tier3Score = tier3Info.Score
+                    }).ToList();
+        }
+
         public LevelAttempt GetHighestCompletedLevelAttemptForPlayer(int playerId)
         {
             LevelAttempt highestCompletedLevelAttempt =
