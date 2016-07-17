@@ -73,31 +73,37 @@ namespace AlienzApi.Business
         public ICollection<LevelDto> GetAllLevelsInWorld(int worldId)
         {
             return (from level in db.Levels
-                    join tier1Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 1 } equals
-                        new { tier1Info.LevelId, tier1Info.TierNumber }
-                    join tier1AwardReason in db.AwardReasons on tier1Info.AwardReasonId equals tier1AwardReason.Id
-                    join tier2Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 2 } equals
-                        new { tier2Info.LevelId, tier2Info.TierNumber }
-                    join tier2AwardReason in db.AwardReasons on tier2Info.AwardReasonId equals tier2AwardReason.Id
-                    join tier3Info in db.TierScoreRewards on new { LevelId = level.Id, TierNumber = 3 } equals
-                        new { tier3Info.LevelId, tier3Info.TierNumber }
-                    join tier3AwardReason in db.AwardReasons on tier3Info.AwardReasonId equals tier3AwardReason.Id
-                    from levelAttempts in db.LevelAttempts.Where(la => la.LevelId == level.Id).DefaultIfEmpty()
-                    //from lowerScoreLevelAttempts in db.LevelAttempts.Where(la => la.Id != levelAttempts.Id && la.LevelId == levelAttempts.LevelId && la.Score <= levelAttempts.Score)
-                    where level.World == worldId// && lowerScoreLevelAttempts == null
-                    select new LevelDto()
-                    {
-                        PlayerHighScore = levelAttempts != null ? levelAttempts.Score : 0,
-                        Sequence = level.SequenceInWorld,
-                        StartingFuel = level.StartingFuel,
-                        StartingTimeSeconds = level.StartingTime,
-                        Tier1Reward = tier1AwardReason.EnergyRewardAmount,
-                        Tier1Score = tier1Info.Score,
-                        Tier2Reward = tier2AwardReason.EnergyRewardAmount,
-                        Tier2Score = tier2Info.Score,
-                        Tier3Reward = tier3AwardReason.EnergyRewardAmount,
-                        Tier3Score = tier3Info.Score
-                    }).ToList();
+                join tier1Info in db.TierScoreRewards on new {LevelId = level.Id, TierNumber = 1} equals
+                    new {tier1Info.LevelId, tier1Info.TierNumber}
+                join tier1AwardReason in db.AwardReasons on tier1Info.AwardReasonId equals tier1AwardReason.Id
+                join tier2Info in db.TierScoreRewards on new {LevelId = level.Id, TierNumber = 2} equals
+                    new {tier2Info.LevelId, tier2Info.TierNumber}
+                join tier2AwardReason in db.AwardReasons on tier2Info.AwardReasonId equals tier2AwardReason.Id
+                join tier3Info in db.TierScoreRewards on new {LevelId = level.Id, TierNumber = 3} equals
+                    new {tier3Info.LevelId, tier3Info.TierNumber}
+                join tier3AwardReason in db.AwardReasons on tier3Info.AwardReasonId equals tier3AwardReason.Id
+                from levelAttempts in
+                    db.LevelAttempts.Where(
+                        la =>
+                            la.LevelId == level.Id &&
+                            !db.LevelAttempts.Any(
+                                laHigher =>
+                                    laHigher.Id != la.Id && laHigher.LevelId == la.LevelId && (laHigher.Score > la.Score || (laHigher.Score == la.Score && laHigher.Id > la.Id))))
+                        .DefaultIfEmpty()
+                where level.World == worldId
+                select new LevelDto()
+                {
+                    PlayerHighScore = levelAttempts != null ? levelAttempts.Score : 0,
+                    Sequence = level.SequenceInWorld,
+                    StartingFuel = level.StartingFuel,
+                    StartingTimeSeconds = level.StartingTime,
+                    Tier1Reward = tier1AwardReason.EnergyRewardAmount,
+                    Tier1Score = tier1Info.Score,
+                    Tier2Reward = tier2AwardReason.EnergyRewardAmount,
+                    Tier2Score = tier2Info.Score,
+                    Tier3Reward = tier3AwardReason.EnergyRewardAmount,
+                    Tier3Score = tier3Info.Score
+                }).ToList();
         }
 
         public LevelAttempt GetHighestCompletedLevelAttemptForPlayer(int playerId)

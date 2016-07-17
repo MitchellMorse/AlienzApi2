@@ -269,6 +269,36 @@ namespace AlienzApi.Tests.Controllers
             Assert.AreEqual(expectedLevel1HighScore, levels.Single(l => l.Sequence == 1).PlayerHighScore);
             Assert.AreEqual(expectedLevel2HighScore, levels.Single(l => l.Sequence == 2).PlayerHighScore);
         }
+
+        [TestMethod]
+        public void GetAllLevelsInWorld_3LevelsLevel1CompletedTie()
+        {
+            //Arrange
+            Level level1 = GetTestLevel();
+            Level level2 = GetTestLevel(sequenceInWorld: 2);
+            Level level3 = GetTestLevel(sequenceInWorld: 3);
+            Setup3TiersForLevel(level1.Id);
+            Setup3TiersForLevel(level2.Id);
+            Setup3TiersForLevel(level3.Id);
+            Player player = GetTestPlayer();
+            LevelAttempt attemptFailed = GetTestLevelAttempt(player.Id, level1.Id, score: 1022, timeSeconds: 543,
+                completed: true);
+            LevelAttempt attemptSuccess = GetTestLevelAttempt(player.Id, level1.Id, score: 1022, timeSeconds: 325,
+                completed: true);
+
+            LevelProvider provider = new LevelProvider(_context);
+
+            //Act
+            ICollection<LevelDto> levels = provider.GetAllLevelsInWorld(_testWorldId);
+
+            //Assert
+            int expectedCount = 3;
+            int expectedLevel1HighScore = 1022;
+            int expectedLevel2HighScore = 0;
+            Assert.AreEqual(expectedCount, levels.Count);
+            Assert.AreEqual(expectedLevel1HighScore, levels.Single(l => l.Sequence == 1).PlayerHighScore);
+            Assert.AreEqual(expectedLevel2HighScore, levels.Single(l => l.Sequence == 2).PlayerHighScore);
+        }
         #endregion
 
         Level GetDemoLevel()
