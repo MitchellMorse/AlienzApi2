@@ -17,6 +17,7 @@ namespace AlienzApi.Tests.DbSets
         public DbSet<LevelAttempt> LevelAttempts { get; set; }
         public DbSet<TierScoreReward> TierScoreRewards { get; set; }
         public DbSet<AwardReason> AwardReasons { get; set; }
+        public DbSet<PlayerDeath> PlayerDeaths { get; set; }
 
         public void Dispose()
         {

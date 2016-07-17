@@ -21,7 +21,8 @@ namespace AlienzApi.Tests.TestHelpers
         private List<int> PlayerIdsToCleanup { get; set; }
         private List<int> TierScoreRewardIdsToCleanup { get; set; }
         private List<int> AwardReasonIdsToCleanup { get; set; }
-        
+        private List<int> PlayerDeathIdsToCleanup { get; set; }
+
         protected virtual void InitializeDbContext()
         {
             _context = DbContext;
@@ -30,6 +31,18 @@ namespace AlienzApi.Tests.TestHelpers
         protected virtual void CleanTests()
         {
             var db = new AlienzApiContext();
+
+            if (PlayerDeathIdsToCleanup.Any())
+            {
+                var playerDeaths = db.PlayerDeaths.Where(l => PlayerDeathIdsToCleanup.Contains(l.Id));
+
+                foreach (var death in playerDeaths)
+                {
+                    db.PlayerDeaths.Remove(death);
+                }
+
+                db.SaveChanges();
+            }
 
             if (LevelAttemptIdsToCleanup.Any())
             {
@@ -101,6 +114,7 @@ namespace AlienzApi.Tests.TestHelpers
             PlayerIdsToCleanup = new List<int>();
             AwardReasonIdsToCleanup = new List<int>();
             TierScoreRewardIdsToCleanup = new List<int>();
+            PlayerDeathIdsToCleanup = new List<int>();
         }
 
         protected Level GetTestLevel(int testWorld = 9999, int sequenceInWorld = 1, int startingFuel = 100, int startingTime = 500, bool active = true, bool isBlockingLevel = false)
@@ -184,6 +198,26 @@ namespace AlienzApi.Tests.TestHelpers
             AwardReasonIdsToCleanup.Add(reason.Id);
 
             return reason;
+        }
+
+        protected PlayerDeath GetTestPlayerDeath(int playerId, int levelAttemptId, DateTime? irrelevantTime = null)
+        {
+            if (irrelevantTime == null)
+            {
+                irrelevantTime = DateTime.Now.AddMinutes(30);
+            }
+
+            PlayerDeath death = _context.PlayerDeaths.Add(new PlayerDeath
+            {
+                IrreleventTime = irrelevantTime.Value,
+                LevelAttemptId = levelAttemptId,
+                PlayerId = playerId
+            });
+
+            _context.SaveChanges();
+            PlayerDeathIdsToCleanup.Add(death.Id);
+
+            return death;
         }
 
         protected List<TierScoreReward> Setup3TiersForLevel(int levelId)
