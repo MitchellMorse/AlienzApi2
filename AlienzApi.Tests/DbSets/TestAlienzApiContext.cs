@@ -18,6 +18,10 @@ namespace AlienzApi.Tests.DbSets
         public DbSet<TierScoreReward> TierScoreRewards { get; set; }
         public DbSet<AwardReason> AwardReasons { get; set; }
         public DbSet<PlayerDeath> PlayerDeaths { get; set; }
+        public DbSet<PlayerPowerupUsage> PlayerPowerupUsages { get; set; }
+        public DbSet<EnergyPurchaseableItem> EnergyPurchaseableItems { get; set; }
+        public DbSet<Powerup> Powerups { get; set; }
+        public DbSet<EnergyPurchase> EnergyPurchases { get; set; }
 
         public void Dispose()
         {

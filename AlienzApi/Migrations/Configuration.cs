@@ -261,7 +261,7 @@ namespace AlienzApi.Migrations
                 {
                     Id = 5,
                     Name = "PowerupJump",
-                    PowerupId = 1,
+                    PowerupId = 2,
                     Quantity = 6,
                     EnergyCost = 18,
                     Active = true,

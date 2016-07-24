@@ -22,6 +22,8 @@ namespace AlienzApi.Tests.TestHelpers
         private List<int> TierScoreRewardIdsToCleanup { get; set; }
         private List<int> AwardReasonIdsToCleanup { get; set; }
         private List<int> PlayerDeathIdsToCleanup { get; set; }
+        private List<int> EnergyPurchaseIdsToCleanup { get; set; }
+        private List<int> PlayerPowerupUsagesIdsToCleanup { get; set; }
 
         protected virtual void InitializeDbContext()
         {
@@ -31,6 +33,30 @@ namespace AlienzApi.Tests.TestHelpers
         protected virtual void CleanTests()
         {
             var db = new AlienzApiContext();
+
+            if (PlayerPowerupUsagesIdsToCleanup.Any())
+            {
+                var usages = db.PlayerPowerupUsages.Where(l => PlayerPowerupUsagesIdsToCleanup.Contains(l.Id));
+
+                foreach (var usage in usages)
+                {
+                    db.PlayerPowerupUsages.Remove(usage);
+                }
+
+                db.SaveChanges();
+            }
+
+            if (EnergyPurchaseIdsToCleanup.Any())
+            {
+                var purchases = db.EnergyPurchases.Where(l => EnergyPurchaseIdsToCleanup.Contains(l.Id));
+
+                foreach (var purchase in purchases)
+                {
+                    db.EnergyPurchases.Remove(purchase);
+                }
+
+                db.SaveChanges();
+            }
 
             if (PlayerDeathIdsToCleanup.Any())
             {
@@ -115,6 +141,8 @@ namespace AlienzApi.Tests.TestHelpers
             AwardReasonIdsToCleanup = new List<int>();
             TierScoreRewardIdsToCleanup = new List<int>();
             PlayerDeathIdsToCleanup = new List<int>();
+            EnergyPurchaseIdsToCleanup = new List<int>();
+            PlayerPowerupUsagesIdsToCleanup = new List<int>();
         }
 
         protected Level GetTestLevel(int testWorld = 9999, int sequenceInWorld = 1, int startingFuel = 100, int startingTime = 500, bool active = true, bool isBlockingLevel = false)
@@ -218,6 +246,48 @@ namespace AlienzApi.Tests.TestHelpers
             PlayerDeathIdsToCleanup.Add(death.Id);
 
             return death;
+        }
+
+        protected EnergyPurchase GetTestEnergyPurchase(int playerId, int energyPurchaseableItemId, DateTime? date = null)
+        {
+            if (date == null)
+            {
+                date = DateTime.Now.AddMinutes(30);
+            }
+
+            EnergyPurchase purchase = _context.EnergyPurchases.Add(new EnergyPurchase
+            {
+                Date = date.Value,
+                EnergyPurchaseableItemId = energyPurchaseableItemId,
+                PlayerId = playerId
+            });
+
+            _context.SaveChanges();
+            EnergyPurchaseIdsToCleanup.Add(purchase.Id);
+
+            return purchase;
+        }
+
+        protected PlayerPowerupUsage GetTestPlayerPowerupUsage(int playerId, int powerupId, int levelAttemptId,
+            DateTime? date = null)
+        {
+            if (date == null)
+            {
+                date = DateTime.Now;
+            }
+
+            PlayerPowerupUsage usage = _context.PlayerPowerupUsages.Add(new PlayerPowerupUsage
+            {
+                Date = date.Value,
+                LevelAttemptId = levelAttemptId,
+                PlayerId = playerId,
+                PowerupId = powerupId
+            });
+
+            _context.SaveChanges();
+            PlayerPowerupUsagesIdsToCleanup.Add(usage.Id);
+
+            return usage;
         }
 
         protected List<TierScoreReward> Setup3TiersForLevel(int levelId)

@@ -43,9 +43,38 @@ namespace AlienzApi.Business
             return currentPlayerLives > -1 ? currentPlayerLives : 0;
         }
 
-        //private ICollection<KeyValuePair<string, int>> GetPlayerCurrentPowerups(int playerId)
-        //{
-            
-        //}
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns>Dictionary where the key is the powerup name and the int is the quantity the player currently has available</returns>
+        public Dictionary<string, int> GetPlayerCurrentPowerups(int playerId)
+        {
+            var query = (from ep in db.EnergyPurchases.Where(ep => ep.PlayerId == playerId)
+                         join epi in db.EnergyPurchaseableItems.Where(epi => epi.PowerupId != null) on
+                             ep.EnergyPurchaseableItemId equals epi.Id
+                         join p in db.Powerups on epi.PowerupId equals p.Id
+                         group p by new { p.Id, p.Name, epi.Quantity } into pGrouped
+                         orderby pGrouped.Key
+                         select new { pGrouped.Key.Name, Quantity = pGrouped.Sum(p => pGrouped.Key.Quantity) }
+                );
+
+            List<KeyValuePair<string, int>> powerups = query.AsEnumerable().Select(i => new KeyValuePair<string, int>(i.Name, i.Quantity)).ToList();
+
+            var powerupsSummed = new Dictionary<string, int>();
+            foreach (KeyValuePair<string, int> powerup in powerups)
+            {
+                if (!powerupsSummed.ContainsKey(powerup.Key))
+                {
+                    powerupsSummed[powerup.Key] = powerup.Value;
+                }
+                else
+                {
+                    powerupsSummed[powerup.Key] += powerup.Value;
+                }
+            }
+
+            return powerupsSummed;
+        }
     }
 }
