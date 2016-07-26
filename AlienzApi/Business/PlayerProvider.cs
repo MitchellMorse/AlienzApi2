@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using AlienzApi.Models;
@@ -28,7 +29,7 @@ namespace AlienzApi.Business
             Level nextNonCompletedLevel = levelProvider.GetNextNonCompleteLevel(playerId);
             gameStart.AllLevelsInCurrentWorld = levelProvider.GetAllLevelsInWorld(nextNonCompletedLevel.World);
             gameStart.PlayerLives = GetCurrentPlayerLives(playerId);
-            //gameStart.PowerupCount = GetPlayerCurrentPowerups(playerId);
+            gameStart.PowerupCount = GetPlayerCurrentPowerups(playerId);
 
             return gameStart;
         }
@@ -50,31 +51,37 @@ namespace AlienzApi.Business
         /// <returns>Dictionary where the key is the powerup name and the int is the quantity the player currently has available</returns>
         public Dictionary<string, int> GetPlayerCurrentPowerups(int playerId)
         {
-            var query = (from ep in db.EnergyPurchases.Where(ep => ep.PlayerId == playerId)
-                         join epi in db.EnergyPurchaseableItems.Where(epi => epi.PowerupId != null) on
-                             ep.EnergyPurchaseableItemId equals epi.Id
-                         join p in db.Powerups on epi.PowerupId equals p.Id
-                         group p by new { p.Id, p.Name, epi.Quantity } into pGrouped
-                         orderby pGrouped.Key
-                         select new { pGrouped.Key.Name, Quantity = pGrouped.Sum(p => pGrouped.Key.Quantity) }
-                );
+            Player player = db.Players.Where(p => p.Id == playerId)
+                .Include(p => p.PlayerPowerupUsages.Select(pu => pu.Powerup))
+                .Include(p => p.EnergyPurchases.Select(ep => ep.EnergyPurchaseableItem.Powerups))
+                .Single();
 
-            List<KeyValuePair<string, int>> powerups = query.AsEnumerable().Select(i => new KeyValuePair<string, int>(i.Name, i.Quantity)).ToList();
+            Dictionary<string, int> availablePowerups = new Dictionary<string, int>();
 
-            var powerupsSummed = new Dictionary<string, int>();
-            foreach (KeyValuePair<string, int> powerup in powerups)
+            foreach (
+                var energyPurchase in
+                    player.EnergyPurchases.Where(
+                        e => e.EnergyPurchaseableItem.PowerupId != null && e.EnergyPurchaseableItem.PowerupId > 0))
             {
-                if (!powerupsSummed.ContainsKey(powerup.Key))
+                if (!availablePowerups.ContainsKey(energyPurchase.EnergyPurchaseableItem.Powerups.Name))
                 {
-                    powerupsSummed[powerup.Key] = powerup.Value;
+                    availablePowerups[energyPurchase.EnergyPurchaseableItem.Powerups.Name] =
+                        energyPurchase.EnergyPurchaseableItem.Quantity;
                 }
                 else
                 {
-                    powerupsSummed[powerup.Key] += powerup.Value;
+                    availablePowerups[energyPurchase.EnergyPurchaseableItem.Powerups.Name] +=
+                        energyPurchase.EnergyPurchaseableItem.Quantity;
                 }
             }
 
-            return powerupsSummed;
+            foreach (
+                var powerupUsage in player.PlayerPowerupUsages.Where(pu => pu.PowerupId > 0))
+            {
+                availablePowerups[powerupUsage.Powerup.Name] -= 1;
+            }
+
+            return availablePowerups;
         }
     }
 }
